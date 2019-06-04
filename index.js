@@ -16,7 +16,7 @@ const router = {
 	'ping': handlers.ping
 };
 
-const httpsServer = http.createServer(function(req, res) {
+const httpsServer = https.createServer(function(req, res) {
     var parsedUrl = url.parse(req.url, true);
     var method = req.method.toLowerCase();
     var path = parsedUrl.pathname;
