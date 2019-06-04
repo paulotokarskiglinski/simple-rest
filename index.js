@@ -24,7 +24,7 @@ httpsServerOptions = {
 };
 const httpsServer = https.createServer(httpsServerOptions, function(req, res) {
 	server(req, res);
-}).listen(process.env.NODE_ENV || 433);
+}).listen(process.env.PORT || 6000);
 
 const server = function(req, res) {
     req.on('end', function() {
