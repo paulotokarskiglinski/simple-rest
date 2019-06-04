@@ -1,5 +1,7 @@
+const fs = require('fs');
 const url = require('url');
 const http = require('http');
+const https = require('https');
 const StringDecoder = require('string_decoder').StringDecoder;
 const handlers = {};
 
@@ -16,7 +18,19 @@ const router = {
 	'ping': handlers.ping
 };
 
-const httpsServer = https.createServer(function(req, res) {
+const httpServer = http.createServer(function(req, res) {
+	server(req, res);
+}).listen(process.env.NODE_ENV || 5000);
+
+httpsServerOptions = {
+	'key': fs.readFileSync('./https/key.pem'),
+	'cert': fs.readFileSync('./https/cert.pem')
+};
+const httpsServer = https.createServer(httpsServerOptions, function(req, res) {
+	server(req, res);
+}).listen(process.env.NODE_ENV || 6000);
+
+const server = function(req, res) {
     var parsedUrl = url.parse(req.url, true);
     var method = req.method.toLowerCase();
     var path = parsedUrl.pathname;
@@ -28,4 +42,4 @@ const httpsServer = https.createServer(function(req, res) {
         res.write(JSON.stringify(payload));
         res.end();
     });
-}).listen(process.env.NODE_ENV || 8080);
+}
