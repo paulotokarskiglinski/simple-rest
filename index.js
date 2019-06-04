@@ -31,15 +31,17 @@ const httpsServer = https.createServer(httpsServerOptions, function(req, res) {
 }).listen(process.env.NODE_ENV || 433);
 
 const server = function(req, res) {
-    var parsedUrl = url.parse(req.url, true);
-    var method = req.method.toLowerCase();
-    var path = parsedUrl.pathname;
-    var trimmedPath = path.replace(/^\/+|\/+$/g, '');
-    
-    var chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
-    chosenHandler(function(statusCode, payload) {
-        res.writeHead(statusCode, {'Content-Type': 'application/json'});
-        res.write(JSON.stringify(payload));
-        res.end();
+    req.on('end', function() {
+        var parsedUrl = url.parse(req.url, true);
+        var method = req.method.toLowerCase();
+        var path = parsedUrl.pathname;
+        var trimmedPath = path.replace(/^\/+|\/+$/g, '');
+        
+        var chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
+        chosenHandler(function(statusCode, payload) {
+            res.writeHead(statusCode, {'Content-Type': 'application/json'});
+            res.write(JSON.stringify(payload));
+            res.end();
+        });
     });
 }
