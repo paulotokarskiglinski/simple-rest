@@ -18,10 +18,6 @@ const router = {
 	'ping': handlers.ping
 };
 
-const httpServer = http.createServer(function(req, res) {
-	server(req, res);
-}).listen(process.env.NODE_ENV || 5000);
-
 httpsServerOptions = {
 	'key': fs.readFileSync('./https/key.pem'),
 	'cert': fs.readFileSync('./https/cert.pem')
