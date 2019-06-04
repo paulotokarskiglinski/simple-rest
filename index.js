@@ -28,7 +28,7 @@ httpsServerOptions = {
 };
 const httpsServer = https.createServer(httpsServerOptions, function(req, res) {
 	server(req, res);
-}).listen(process.env.NODE_ENV || 6000);
+}).listen(process.env.NODE_ENV || 433);
 
 const server = function(req, res) {
     var parsedUrl = url.parse(req.url, true);
