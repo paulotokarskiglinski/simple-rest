@@ -28,4 +28,4 @@ const httpsServer = http.createServer(function(req, res) {
         res.write(JSON.stringify(payload));
         res.end();
     });
-}).listen(8080);
+}).listen(process.env.NODE_ENV || 8080);
