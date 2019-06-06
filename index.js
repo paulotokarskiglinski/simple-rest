@@ -2,11 +2,10 @@ const fs = require('fs');
 const url = require('url');
 const http = require('http');
 const https = require('https');
-const StringDecoder = require('string_decoder').StringDecoder;
 const handlers = {};
 
 handlers.sample = function(callback) {
-	callback(406, { name: 'sample handler'});
+	callback(406, { name: 'sample handler' });
 };
 
 handlers.notFound = function(callback) {
@@ -17,6 +16,10 @@ const router = {
 	'sample': handlers.sample,
 	'ping': handlers.ping
 };
+
+const httpServer = http.createServer(function(req, res) {
+	server(req, res);
+}).listen(process.env.PORT || 5000);
 
 httpsServerOptions = {
 	'key': fs.readFileSync('./https/key.pem'),
