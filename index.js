@@ -13,6 +13,7 @@ handlers.notFound = function(callback) {
 };
 
 const router = {
+    '': handlers.sample,
 	'sample': handlers.sample,
 	'ping': handlers.ping
 };
