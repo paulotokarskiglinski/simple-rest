@@ -17,9 +17,11 @@ const router = {
 	'ping': handlers.ping
 };
 
+/*
 const httpServer = http.createServer(function(req, res) {
 	server(req, res);
 }).listen(process.env.PORT || 5000);
+*/
 
 httpsServerOptions = {
 	'key': fs.readFileSync('./https/key.pem'),
