@@ -45,18 +45,10 @@ const router = {
   '': handlers.status,
 	'usuarios': handlers.usuarios,
 };
-/* REMOVE THE COMMENT TO RUN THIS ON LOCALHOST
+
 const httpServer = http.createServer(function(req, res) {
   server(req, res);
 }).listen(process.env.PORT || 5000);
-*/
-httpsServerOptions = {
-  'key': fs.readFileSync('https/key.pem'),
-	'cert': fs.readFileSync('https/cert.pem')
-};
-const httpsServer = https.createServer(httpsServerOptions, function(req, res) {
-  server(req, res);
-}).listen(process.env.PORT || 6000);
 
 const server = function(req, res) {
   const parsedUrl = url.parse(req.url, true);
