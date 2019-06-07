@@ -10,7 +10,7 @@ handlers.status = function(data, callback) {
 
 handlers._usuarios = {};
 handlers.usuarios = function(data, callback) {
-  fs.readFile('./libs/usuarios.json', 'utf8', function(err, usuarios) {
+  fs.readFile(path.join(__dirname, ('/libs/usuarios.json'), 'utf8', function(err, usuarios) {
     if (err) {
       throw new Error(err);
     } else {
@@ -45,18 +45,18 @@ const router = {
   '': handlers.status,
 	'usuarios': handlers.usuarios,
 };
-/*
 const httpServer = http.createServer(function(req, res) {
-	server(req, res);
+  server(req, res);
 }).listen(process.env.PORT || 5000);
-*/
+/* REMOVE THE COMMENT TO RUN THIS ON LOCALHOST
 httpsServerOptions = {
-	'key': fs.readFileSync('./https/key.pem'),
-	'cert': fs.readFileSync('./https/cert.pem')
+  'key': fs.readFileSync(path.join(__dirname, '/https/key.pem')),
+	'cert': fs.readFileSync(path.join(__dirname, '/https/cert.pem'))
 };
 const httpsServer = https.createServer(httpsServerOptions, function(req, res) {
-	server(req, res);
+  server(req, res);
 }).listen(process.env.PORT || 6000);
+*/
 
 const server = function(req, res) {
   const parsedUrl = url.parse(req.url, true);
