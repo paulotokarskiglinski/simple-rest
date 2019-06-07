@@ -10,7 +10,7 @@ handlers.status = function(data, callback) {
 
 handlers._usuarios = {};
 handlers.usuarios = function(data, callback) {
-  fs.readFile(path.join(__dirname, ('/libs/usuarios.json')), 'utf8', function(err, usuarios) {
+  fs.readFile('libs/usuarios.json', 'utf8', function(err, usuarios) {
     if (err) {
       throw new Error(err);
     } else {
