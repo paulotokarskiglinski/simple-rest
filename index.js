@@ -51,8 +51,8 @@ const httpServer = http.createServer(function(req, res) {
 }).listen(process.env.PORT || 5000);
 */
 httpsServerOptions = {
-  'key': fs.readFileSync('/https/key.pem'),
-	'cert': fs.readFileSync('/https/cert.pem')
+  'key': fs.readFileSync('https/key.pem'),
+	'cert': fs.readFileSync('https/cert.pem')
 };
 const httpsServer = https.createServer(httpsServerOptions, function(req, res) {
   server(req, res);
