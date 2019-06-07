@@ -1,28 +1,54 @@
+const handlers = {};
 const fs = require('fs');
 const url = require('url');
 const http = require('http');
 const https = require('https');
-const handlers = {};
 
-handlers.sample = function(callback) {
-	callback(406, { name: 'sample handler' });
+handlers.status = function(data, callback) {
+  callback(202, {status: true});
 };
 
-handlers.notFound = function(callback) {
-	callback(404, { error: 404 });
+handlers._usuarios = {};
+handlers.usuarios = function(data, callback) {
+  fs.readFile('./libs/usuarios.json', 'utf8', function(err, usuarios) {
+    if (err) {
+      throw new Error(err);
+    } else {
+      const metodos = ['get'];
+      if(metodos.indexOf(data.method) > -1){
+        handlers._usuarios[data.method](usuarios, data, callback);
+      } else {
+        callback(405, {error: 405, message: "Método não permitido"});
+      }
+    }
+  });
+};
+
+handlers._usuarios.get = function(usuarios, data, callback) {
+  const array = JSON.parse(usuarios);
+  const id = typeof(data.queryParams.id) == 'string' ? data.queryParams.id : false;
+
+  if (id) {
+    callback(202, array.filter(function(usuario) {
+      return usuario.id.toString() === id;
+    }));    
+  } else {
+    callback(202, array);
+  }
+}
+
+handlers.notFound = function(data, callback) {
+	callback(404, {error: 404});
 };
 
 const router = {
-    '': handlers.sample,
-	'sample': handlers.sample,
-	'ping': handlers.ping
+  '': handlers.status,
+	'usuarios': handlers.usuarios,
 };
 
-/*
 const httpServer = http.createServer(function(req, res) {
 	server(req, res);
 }).listen(process.env.PORT || 5000);
-*/
 
 httpsServerOptions = {
 	'key': fs.readFileSync('./https/key.pem'),
@@ -33,15 +59,18 @@ const httpsServer = https.createServer(httpsServerOptions, function(req, res) {
 }).listen(process.env.PORT || 6000);
 
 const server = function(req, res) {
-    var parsedUrl = url.parse(req.url, true);
-    var method = req.method.toLowerCase();
-    var path = parsedUrl.pathname;
-    var trimmedPath = path.replace(/^\/+|\/+$/g, '');
-    
-    var chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
-    chosenHandler(function(statusCode, payload) {
-        res.writeHead(statusCode, {'Content-Type': 'application/json'});
-        res.write(JSON.stringify(payload));
-        res.end();
-    });
+  const parsedUrl = url.parse(req.url, true);
+  const path = parsedUrl.pathname;
+  const trimmedPath = path.replace(/^\/+|\/+$/g, '');
+  const data = {
+    queryParams: parsedUrl.query,
+    method: req.method.toLowerCase()
+  };
+
+  const chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
+  chosenHandler(data, function(statusCode, payload) {
+    res.writeHead(statusCode, {'Content-Type': 'application/json'});
+    res.write(JSON.stringify(payload));
+    res.end();
+  });
 }
