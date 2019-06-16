@@ -9,7 +9,7 @@
     {
         "id": 1,
         "nome": "Maria Clara",
-        "usario": "mclara",
+        "usuario": "mclara",
         "email": "mariaclara@email.com",
         "senha": "mclara@123"
     },

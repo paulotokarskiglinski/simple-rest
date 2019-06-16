@@ -1,7 +1,7 @@
 {
   "name": "simple-rest",
   "version": "1.0.0",
-  "description": "No ExpressJS - Simple and pure NodeJS REST API",
+  "description": "No Express - Simple and pure NodeJS REST API",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
